@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Finance Tools Ireland</title>
+
+    <!-- Custom fonts for this template -->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+    
+         <!-- Custom styles for this page -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+    
+    	 <!-- Sidebar -->
+       <ul th:replace="fragments/common-fragments :: sidebar"></ul>
+       
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                 <nav th:insert="fragments/common-fragments :: topbar"></nav>
+                <!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Finance Tools</h1>
+                    
+                       <div class="card border-left-primary shadow h-100 py-2">
+                       
+                         <h3 class="m-0 font-weight-bold text-primary">Investment Calculator</h3>
+                                <div class="card-body">
+							<div class="row no-gutters align-items-center">
+								<div class="col mr-2">
+									<form>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label for="investmentGoal" class="col-form-label">Investment
+													Goal</label> <input type="text" id="investmentGoal"
+													name="investmentGoal">
+											</div>
+										</div>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label class="col-form-label" for="years">Years to
+													accumulate</label> <input type="text" id="years" name="years">
+											</div>
+										</div>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label class="col-form-label" for="rateOfReturn">Rate
+													% </label> <input type="text" id="rateOfReturn" name="rateOfReturn">
+											</div>
+										</div>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label class="col-form-label" for="initialAmount">Initial
+													Investment Amount</label> <input type="text" id="initialAmount"
+													name="initialAmount">
+											</div>
+										</div>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label class="col-form-label" for="periodicContribution">Periodic
+													Contribution</label> <input type="text" id="periodicContribution"
+													name="periodicContribution">
+											</div>
+										</div>
+
+										<div class="row g-3 align-items-center">
+											<div class="col-auto">
+												<label class="col-form-label" for="contributionFrequency">Contribution
+													Frequency </label><br> <select id="contributionFrequency"
+													name="contributionFrequency">
+													<option value="annual">Annual</option>
+													<option value="monthly">Monthly</option>
+												</select>
+											</div>
+										</div>
+
+										<br>
+										<button id="investmentCalcButton" type="button">Submit</button>
+									</form>
+									<div id="investmentResult" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                        <div class="col-auto">
+                                        </div>
+                                    <div id="investmentGoalResult" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                        <div class="col-auto">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+				</div>
+                <!-- /.container-fluid -->
+                
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+              <footer th:replace="fragments/common-fragments :: footer"></footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    
+    <script type="text/javascript">
+	
+  document.getElementById('investmentCalcButton').onclick = function() {
+  var investmentGoal = Number(document.getElementById("investmentGoal").value);
+  var years = Number(document.getElementById("years").value);
+  var initialAmount = Number(document.getElementById("initialAmount").value);
+  var rate = Number(document.getElementById("rateOfReturn").value);
+  var periodicContribution = Number(document.getElementById("periodicContribution").value);
+  var contributionFrequency = document.getElementById("contributionFrequency").value;
+  
+  var growth=0;
+
+
+  console.log("years:" + years + " rate:" + rateOfReturn + " periodicContribution:" + periodicContribution + " contributionFrequency:" + contributionFrequency);
+  const compoundInterest = (investment, years, rate, frequency, initialAmount) => {
+
+    rate = rate / 1000;
+    var futureValue = initialAmount;
+    var totalContributions=0;
+    const calculationMap = new Map();
+
+    if (frequency == "annual") {
+      for (i = 1; i <= years; i++) {
+        futureValue = Math.floor((futureValue + investment) * (1 + rate));
+      }
+    } else if (frequency == "monthly") {
+      for (x = 1; x <= years; x++) {
+        for (i = 1; i <= 12-1; i++) {
+          futureValue = Math.floor((futureValue + investment) * (1 + rate));
+          totalContributions+=investment;
+        }
+      }
+    }
+    calculationMap.set("futureValue",futureValue);
+    calculationMap.set("totalContributions",totalContributions);
+    return calculationMap;
+  };
+
+  const calculationMap=compoundInterest(periodicContribution, years, rate, contributionFrequency, initialAmount);
+ 	 var futureValue=calculationMap.get("futureValue");
+ 	 var totalContributions=calculationMap.get("totalContributions");
+ 	 var growth=futureValue-totalContributions;
+ 	 var cgtax=futureValue/100*30;
+ 	 var netTotal=futureValue-cgtax;
+    document.getElementById("investmentResult").innerHTML= "<h2> Result </h2>"+
+	"<br> <h3> Future Value Before tax &euro;"+futureValue+"</h3> <br><h3>Total After Capital Gains tax is deducted &euro;"+netTotal+"</h3>"; 
+
+	if(investmentGoal>futureValue){
+	 document.getElementById("investmentGoalResult").innerHTML= '<h2 style="color:Red;"> Your Investment has not met your investment goal. </h2>';
+	
+	}
+
+}
+        
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+    <!-- Page level plugins -->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+    <!-- Page level custom scripts -->
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+</body>
+
+</html>

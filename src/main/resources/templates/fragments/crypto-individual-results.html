@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<body>
+
+	<div th:fragment="resultsList" id="results-block"
+		class="table-responsive">
+		<table class="table table-bordered" width="100%" cellspacing="0">
+			<thead>
+				<tr>
+					<th>Crypto Currency</th>
+					<th>Exchange Currency</th>
+					<th>Current Price</th>
+					<th>Time Updated</th>
+				</tr>
+			<tbody>
+				<tr>
+					<td><span th:text="${rate.name}"> Base Asset </span></td>
+					<td><span th:text="${rate.fiat}"> Target
+							Asset </span></td>
+					<td><span th:text="${rate.value}"> Rate Amount </span></td>
+					<td><span th:text="${rate.currentTime}"> Time </span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
