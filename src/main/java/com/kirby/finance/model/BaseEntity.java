@@ -9,10 +9,12 @@ import javax.persistence.MappedSuperclass;
 
 import com.sun.istack.NotNull;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public class BaseEntity implements Serializable {
 
 	/**
@@ -25,5 +27,6 @@ public class BaseEntity implements Serializable {
 	private Long id;
 	@NotNull
 	private String name;
+	
 
 }
