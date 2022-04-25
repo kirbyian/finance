@@ -5,10 +5,3 @@ function retrieveCryptoResults() {
 		.concat(cryptoOptionValue);
 	$("#resultsBlock").load(url);
 }
-
-function retrieveAllCryptoResults() {
-
-	var url = '/cryptoRatesResult?crypto='.concat(cryptoOptionValue);
-
-	$("#resultsBlock").load(url);
-}

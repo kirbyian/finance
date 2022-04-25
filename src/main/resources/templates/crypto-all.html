@@ -3,138 +3,149 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>Finance Tools Ireland</title>
+	<title>Finance Tools Ireland</title>
 
-    <!-- Custom fonts for this template -->
-    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+	<!-- Custom fonts for this template -->
+	<link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+	<!-- Custom styles for this page -->
+	<link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-        <!-- Sidebar -->
-        <ul th:replace="fragments/common-fragments :: sidebar"></ul>
-        <!-- End of Sidebar -->
+		<!-- Sidebar -->
+		<ul th:replace="fragments/common-fragments :: sidebar"></ul>
+		<!-- End of Sidebar -->
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-                <!-- Topbar -->
-                 <nav th:replace="fragments/common-fragments :: topbar"></nav>
-                <!-- End of Topbar -->
+				<!-- Topbar -->
+				<nav th:replace="fragments/common-fragments :: topbar"></nav>
+				<!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                
-                <h5 th:inline="text">Hello
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h5 th:inline="text">Hello
 						[[${#httpServletRequest.remoteUser}]]!</h1>
-					<form class="form-inline mr-auto w-100 " th:action="@{/logout}" method="post">
-						<input class="form-control bg-light border-0 small" type="submit" value="Sign Out" />
-					</form>
+						<form class="form-inline mr-auto w-100 " th:action="@{/logout}" method="post">
+							<input class="form-control bg-light border-0 small" type="submit" value="Sign Out" />
+						</form>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Current Cryto Exchange Rates</h1>
+						<!-- Page Heading -->
+						<h1 class="h3 mb-2 text-gray-800">Current Cryto Exchange Rates</h1>
 
-						<div class="input-group">
-						
-						
-						
-						<br> <select id="cryptoValue" th:name="crypto"  onchange="singleSelectChangeValue()">
-							<option th:each="crypto : ${crytocurrencies}"
-								th:value="${crypto}" th:text="${crypto}">Crypto</option>
-						</select> <br>
+
+						<!-- DataTales Example -->
+						<div class="card shadow mb-4">
+							<div class="card-header py-3">
+								<h6 class="m-0 font-weight-bold text-primary">Current
+									Exchanges</h6>
+							</div>
+							<div class="card-body">
+								<div th:fragment="resultsList" id="results-block" class="table-responsive">
+									<table class="table table-bordered" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Crypto Currency</th>
+												<th>Exchange Currency</th>
+												<th>Current Price</th>
+												<th>All Time High</th>
+												<th> Market Cap </th>
+												<th>24 Hr Change</th>
+											</tr>
+										<tbody>
+											<tr th:each="rate : ${rates}">
+												<td><span th:text="${rate.name}">Crypto Currency </span></td>
+												<td><span th:text="${rate.fiat}"> Exchange Currency </span></td>
+												<td><span th:text="${rate.value}"> Current Price </span></td>
+												<td><span th:text="${rate.allTimeHigh}"> All Time High </span></td>
+												<td><span th:text="${rate.marketCap}"> Market Cap </span></td>
+												<td>
+													<span style="color:red;" th:if="${rate.priceChange24hr <0}"
+														th:text="${rate.priceChange24hr}">
+														<i class="fa-regular fa-arrow-down-long"></i></span>
+													<span style="color:lightgreen;" th:unless="${rate.priceChange24hr <0}" th:text="${rate.priceChange24hr}"><i class="fa-regular fa-arrow-up-long"></i></span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+
 						</div>
-						<button type="submit" th:name="action"
-						onclick="retrieveAllCryptoResults()" th:value="in">Submit</button>
+						<!-- /.container-fluid -->
 
-					<!-- DataTales Example -->
-                   	
+				</div>
+				<!-- End of Main Content -->
 
-					<!-- DataTales Example -->
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">Current
-								Exchanges</h6>
-						</div>
-						<div class="card-body">
+				<!-- Footer -->
+				<footer th:replace="fragments/common-fragments :: footer"></footer>
+				<!-- End of Footer -->
 
-							<div id="resultsBlock"></div>
+			</div>
+			<!-- End of Content Wrapper -->
 
-						</div>
-					</div>
+		</div>
+		<!-- End of Page Wrapper -->
 
-                </div>
-                <!-- /.container-fluid -->
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top">
+			<i class="fas fa-angle-up"></i>
+		</a>
 
-            </div>
-            <!-- End of Main Content -->
+		<script type="text/javascript">
 
-            <!-- Footer -->
-              <footer th:replace="fragments/common-fragments :: footer"></footer>
-            <!-- End of Footer -->
+			var cryptoOptionValue = document.getElementById("cryptoValue").value;
 
-        </div>
-        <!-- End of Content Wrapper -->
+			function singleSelectChangeValue() {
+				//Getting Value
+				cryptoOptionValue = document.getElementById("cryptoValue").value;
+				console.log(cryptoValue);
+			}
 
-    </div>
-    <!-- End of Page Wrapper -->
+		</script>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+		<!-- Bootstrap core JavaScript-->
+		<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+		<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-	<script type="text/javascript">
-	
-	var cryptoOptionValue=document.getElementById("cryptoValue").value;
-    
-      function singleSelectChangeValue() {
-	//Getting Value
-	 cryptoOptionValue = document.getElementById("cryptoValue").value;
-	console.log(cryptoValue);
-}  
-        
-    </script>
+		<!-- Core plugin JavaScript-->
+		<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
 
-	<!-- Bootstrap core JavaScript-->
-    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+		<!-- Custom scripts for all pages-->
+		<script th:src="@{/js/sb-admin-2.min.js}"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+		<script th:src="@{/js/ajax1.js}"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script th:src="@{/js/sb-admin-2.min.js}"></script>
-    
-    <script th:src="@{/js/ajax1.js}"></script>
+		<!-- Page level plugins -->
+		<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
-    <!-- Page level plugins -->
-    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-
-    <!-- Page level custom scripts -->
-    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+		<!-- Page level custom scripts -->
+		<script th:src="@{/js/demo/datatables-demo.js}"></script>
 
 </body>
 

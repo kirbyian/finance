@@ -26,7 +26,9 @@ public class CryptoExchangeServiceAll extends CryptoExchangeServiceBase {
 		
 		List<Rate> configuredRates = repository.findAll();
 		for(Rate rate:configuredRates) {
+			
 			rates.put(rate.getName(),fetchCryptoApiData(rate.getName()));
 		}
 	}
+
 }

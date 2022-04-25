@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 </head>
 
 <body>
 
-	<div th:fragment="resultsList" id="results-block"
-		class="table-responsive">
+	<div th:fragment="resultsList" id="results-block" class="table-responsive">
 		<table class="table table-bordered" width="100%" cellspacing="0">
 			<thead>
 				<tr>
 					<th>Crypto Currency</th>
 					<th>Exchange Currency</th>
 					<th>Current Price</th>
-					<th>Time Updated</th>
+					<th>All Time High</th>
+					<th> Market Cap </th>
+					<th>24 Hr Change</th>
 				</tr>
 			<tbody>
-				<tr>
-					<td><span th:text="${rate.name}"> Base Asset </span></td>
-					<td><span th:text="${rate.fiat}"> Target
-							Asset </span></td>
-					<td><span th:text="${rate.value}"> Rate Amount </span></td>
-					<td><span th:text="${rate.currentTime}"> Time </span></td>
+					<td><span th:text="${rate.name}">Crypto Currency </span></td>
+					<td><span th:text="${rate.fiat}"> Exchange Currency </span></td>
+					<td><span th:text="${rate.value}"> Current Price </span></td>
+					<td><span th:text="${rate.allTimeHigh}"> All Time High </span></td>
+					<td><span th:text="${rate.marketCap}"> Market Cap </span></td>
+					<td>
+						<span style="color:red;" th:if="${rate.priceChange24hr <0}" th:text="${rate.priceChange24hr}">
+							<i class="fa-regular fa-arrow-down-long"></i></span>
+						<span style="color:lightgreen;" th:unless="${rate.priceChange24hr <0}"
+							th:text="${rate.priceChange24hr}"><i class="fa-regular fa-arrow-up-long"></i></span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 </body>
+
 </html>

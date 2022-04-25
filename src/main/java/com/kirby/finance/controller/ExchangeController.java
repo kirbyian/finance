@@ -14,44 +14,31 @@ import com.kirby.finance.dto.RateDTO;
 import com.kirby.finance.exchange.constants.ExchangeConstants;
 import com.kirby.finance.service.cryptoexchange.CryptoExchangeServiceAll;
 import com.kirby.finance.service.cryptoexchange.CryptoParams;
+import com.litesoftwares.coingecko.constant.Currency;
 import com.litesoftwares.coingecko.domain.Coins.MarketData;
 
 @Controller
 public class ExchangeController implements ExchangeConstants {
 
-	
 	private CryptoParams cryptoParams;
 
 	private CryptoExchangeServiceAll cryptoExchangeService;
 
-	public ExchangeController(@Autowired CryptoExchangeServiceAll cryptoExchangeService,@Autowired CryptoParams cryptoParams) {
-		this.cryptoExchangeService=cryptoExchangeService;
-		this.cryptoParams=cryptoParams;
+	public ExchangeController(@Autowired CryptoExchangeServiceAll cryptoExchangeService,
+			@Autowired CryptoParams cryptoParams) {
+		this.cryptoExchangeService = cryptoExchangeService;
+		this.cryptoParams = cryptoParams;
 	}
 
 	@GetMapping("/cryptoRates")
 	public String showAll(Model model) throws IOException {
 
 		try {
-			model.addAttribute("rates",
-					cryptoExchangeService.fetchCryptoApiData(ExchangeConstants.BTC).getMarketData().getCurrentPrice());
-			model.addAttribute("crytocurrencies", cryptoParams.getCryptoCurrencies());
+			model.addAttribute("rates", cryptoExchangeService.fetchTrendingCryptoApiData());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "crypto-all";
-	}
-
-	@GetMapping("/cryptoRatesResult")
-	public String showAllCryptoResults(@RequestParam(required = false) String crypto, Model model) throws IOException {
-
-		try {
-			model.addAttribute("rates", cryptoExchangeService.fetchCryptoApiData(crypto));
-			model.addAttribute("crytocurrencies", cryptoParams.getCryptoCurrencies());
-		} catch (Exception e) {
-			// TODO Add proper logging
-		}
-		return "fragments/crypto-all-results :: resultsList";
 	}
 
 	@GetMapping("/cryptoRate")
@@ -70,8 +57,12 @@ public class ExchangeController implements ExchangeConstants {
 		RateDTO result = new RateDTO();
 		if (crypto != null && !crypto.isEmpty() && fiat != null && !fiat.isEmpty()) {
 			MarketData marketData = cryptoExchangeService.fetchCryptoApiData(crypto).getMarketData();
-			Map<String, Double> currentPriceMap = marketData.getCurrentPrice();
-			result = new RateDTO(LocalDateTime.now(), crypto, currentPriceMap.get(fiat), fiat);
+			result.setFiat(fiat);
+			result.setName(crypto);
+			result.setValue(marketData.getCurrentPrice().get(fiat));
+			result.setAllTimeHigh(marketData.getAth().get(fiat));
+			result.setMarketCap(marketData.getMarketCap().get(fiat));
+			result.setPriceChange24hr(marketData.getPriceChangePercentage24hInCurrency().get(fiat));
 		}
 
 		model.addAttribute("rate", result);

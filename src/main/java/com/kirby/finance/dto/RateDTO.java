@@ -17,5 +17,17 @@ public class RateDTO {
 	private String name;
 	private double value;
 	private String fiat;
+	private double allTimeHigh;
+	private double priceChange24hr;
+	private double marketCap;
+	private double maxSupply;
+	
+	public RateDTO(LocalDateTime currentTime, String name, double value) {
+		this.currentTime = currentTime;
+		this.name = name;
+		this.value = value;
+	}
+	
+	
 
 }
