@@ -45,42 +45,26 @@
 						</a>
 					<div class="collapse-divider"></div>
 				</div>
-			</div>
 			
-			<div id="collapsePages" class="collapse"
-				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 th:text="#{heading.calculators}" class="collapse-header" th:href="@{/investmentCalculator}"></h6>
 					<a th:text="#{heading.investmentcalculator}" class="collapse-item" th:href="@{/investmentCalculator}"></a>
 					<div class="collapse-divider"></div>
 				</div>
-			</div>
 			
-			
-			<div  sec:authorize="hasRole('ROLE_ADMIN')" id="collapsePages" class="collapse"
-				aria-labelledby="headingPages" data-parent="#accordionSidebar"
-				style="">
-				<div class="bg-white py-2 collapse-inner rounded">
+				<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Admin Pages</h6>
 					<a class="collapse-item" th:href="@{/users}">Users</a> <!--   <a
 						class="collapse-item" th:href="@{/savings/createpage/}">Create
 						new User</a> -->
 					<div class="collapse-divider"></div>
 				</div>
-			</div>
 			
-			<div id="collapsePages" class="collapse"
-				aria-labelledby="headingPages" data-parent="#accordionSidebar"
-				style="">
 				<div class="bg-white py-2 collapse-inner rounded">
 				 <a class="collapse-item" th:text="#{heading.register}" th:href="@{/user/registration/}"></a>
 					<div class="collapse-divider"></div>
 				</div>
-			</div>
 
-			<div id="collapsePages" class="collapse"
-				aria-labelledby="headingPages" data-parent="#accordionSidebar"
-				style="">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Crypto</h6>
 					<a class="collapse-item" th:text="#{heading.allcrypto.rates}" th:href="@{/cryptoRates}"></a> 
