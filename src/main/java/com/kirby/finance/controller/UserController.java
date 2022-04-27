@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.kirby.finance.model.User;
 import com.kirby.finance.repository.UserRepository;
 
-@Controller
+@Controller()
 public class UserController {
 	
 	@Autowired
@@ -28,8 +28,8 @@ public class UserController {
 	    return "register-user";
 	}
 	
-	@GetMapping("/users")
-	public String showUsersPage( Model model) {
+	@GetMapping("/admin/users")
+	public String showUsersAdminPage( Model model) {
 		
 		List<User> users = userRepository.findAll();
 	    model.addAttribute("users",users);

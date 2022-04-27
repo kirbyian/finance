@@ -1,8 +1,10 @@
 package com.kirby.finance.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -19,21 +21,21 @@ import com.kirby.finance.repository.SavingRepository;
 public class SavingController {
 
 	private SavingRepository savingRepository;
-	
+
 	public SavingController(SavingRepository savingRepository) {
 		this.savingRepository = savingRepository;
 	}
 
 	@GetMapping("/savings")
-	public String showAllSavings(Model model) throws IOException {
-		
-	//	String userName = authenticationFacade.getAuthentication().getName();
+	public String showAllSavings(Model model, HttpServletRequest request) throws IOException {
+
+		Principal principal = request.getUserPrincipal();
 
 		long totalGoalAmount = 0;
 		long totalCurrentAmount = 0;
 
 		try {
-			List<Saving> savings = savingRepository.findByUserName("johndoe");
+			List<Saving> savings = savingRepository.findByUserName(principal.getName());
 
 			for (Saving saving : savings) {
 				totalGoalAmount += saving.getGoal();
@@ -79,9 +81,9 @@ public class SavingController {
 			saving.setId(id);
 			return "update-user";
 		}
-		
+
 		Saving existingSaving = savingRepository.findById(id).get();
-		
+
 		existingSaving.setAmount(saving.getAmount());
 		existingSaving.setGoal(saving.getGoal());
 		existingSaving.setDescription(saving.getDescription());
@@ -94,17 +96,16 @@ public class SavingController {
 	}
 
 	@PostMapping("/savings/create/")
-	public String createSavingGoal(@Valid Saving saving, BindingResult result, Model model) throws Exception {
-		
-	//	if(authenticationFacade.getAuthentication().getName().isEmpty()){
-	//		throw new Exception(" User must be logged in to create a Saving Goal");
-	//	}
+	public String createSavingGoal(@Valid Saving saving, BindingResult result, Model model, HttpServletRequest request)
+			throws Exception {
+
+		Principal principal = request.getUserPrincipal();
 
 		if (result.hasErrors()) {
 			return "create-saving";
 		}
-		
-		saving.setUserName("johndoe");
+
+		saving.setUserName(principal.getName());
 		savingRepository.save(saving);
 
 		return "redirect:/savings";
