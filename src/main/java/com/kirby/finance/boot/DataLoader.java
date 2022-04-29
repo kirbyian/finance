@@ -80,12 +80,12 @@ public class DataLoader implements CommandLineRunner {
 		user1.setEnabled(true);
 		
 		User user2 = new User();
-		user1.setFirstName("user");
-		user1.setLastName("user");
-		user1.setPassword(passwordEncoder.encode("password"));
-		user1.setEmail("user");
-		user1.setRole("USER");
-		user1.setEnabled(true);
+		user2.setFirstName("user");
+		user2.setLastName("user");
+		user2.setPassword(passwordEncoder.encode("password"));
+		user2.setEmail("user");
+		user2.setRole("USER");
+		user2.setEnabled(true);
 
 		User admin = new User();
 		admin.setFirstName("admin");
@@ -95,6 +95,7 @@ public class DataLoader implements CommandLineRunner {
 		admin.setRole("ADMIN");
 		admin.setEnabled(true);
 		userRepository.save(user1);
+		userRepository.save(user2);
 		userRepository.save(admin);
 
 		Saving saving1 = new Saving();

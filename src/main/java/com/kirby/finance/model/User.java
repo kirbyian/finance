@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,14 +25,17 @@ public class User {
 	private String lastName;
 	@NotEmpty
 	@Email(message = "{email.notempty}")
+	@Column(unique = true, nullable = false)
 	private String email;
 
 	@Column()
 	@NotNull
 	private String password;
 	
-	@NotNull
+	@Transient
 	private String matchingPassword;
+	
+	private String role;
 
 	public String getMatchingPassword() {
 		return matchingPassword;
@@ -46,6 +50,14 @@ public class User {
 	public User() {
 		super();
 		this.enabled = false;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public Long getId() {
