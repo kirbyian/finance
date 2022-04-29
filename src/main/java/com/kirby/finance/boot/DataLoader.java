@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.kirby.finance.exchange.constants.ExchangeConstants;
@@ -23,11 +24,19 @@ public class DataLoader implements CommandLineRunner {
 	private SavingRepository savingRepository;
 	private RateRepository rateRepository;
 	private CurrencyRepository currencyRepository;
+	
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public void setRateRepository(RateRepository rateRepository, CurrencyRepository currencyRepository) {
+	public void setRateRepository(RateRepository rateRepository, CurrencyRepository currencyRepository,PasswordEncoder passwordEncoder) {
 		this.rateRepository = rateRepository;
 		this.currencyRepository = currencyRepository;
+		this.passwordEncoder=passwordEncoder;
+	}
+	
+
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Autowired
@@ -65,10 +74,28 @@ public class DataLoader implements CommandLineRunner {
 		User user1 = new User();
 		user1.setFirstName("John");
 		user1.setLastName("Doe");
-		user1.setPassword("password1");
+		user1.setPassword(passwordEncoder.encode("password"));
 		user1.setEmail("jdoe@hotmail.com");
+		user1.setRole("USER");
+		user1.setEnabled(true);
+		
+		User user2 = new User();
+		user1.setFirstName("user");
+		user1.setLastName("user");
+		user1.setPassword(passwordEncoder.encode("password"));
+		user1.setEmail("user");
+		user1.setRole("USER");
+		user1.setEnabled(true);
 
+		User admin = new User();
+		admin.setFirstName("admin");
+		admin.setLastName("admin");
+		admin.setPassword(passwordEncoder.encode("password"));
+		admin.setEmail("admin@gmail.com");
+		admin.setRole("ADMIN");
+		admin.setEnabled(true);
 		userRepository.save(user1);
+		userRepository.save(admin);
 
 		Saving saving1 = new Saving();
 		saving1.setDescription("Furniture Saving Goals");
