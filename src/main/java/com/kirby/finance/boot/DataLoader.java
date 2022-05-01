@@ -83,7 +83,7 @@ public class DataLoader implements CommandLineRunner {
 		user2.setFirstName("user");
 		user2.setLastName("user");
 		user2.setPassword(passwordEncoder.encode("password"));
-		user2.setEmail("user");
+		user2.setEmail("user@user.com");
 		user2.setRole("USER");
 		user2.setEnabled(true);
 

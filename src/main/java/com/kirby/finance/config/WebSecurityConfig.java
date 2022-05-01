@@ -1,31 +1,39 @@
 package com.kirby.finance.config;
 
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Resource
+    private UserDetailsService userDetailsService;
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests((authorize) -> authorize
-			.antMatchers("/css/**", "/index").permitAll()
-			.antMatchers("/users/**").hasRole("USER")
-			.antMatchers("/admin/**").hasRole("ADMIN")
+			.mvcMatchers("/css/**", "/index","/user-pending","/users/create").permitAll()
+			.mvcMatchers("/users/**").hasRole("USER")
+			.mvcMatchers("/admin/**").hasRole("ADMIN")
 		).logout(logout -> {
 			try {
 				logout
 				        .permitAll()
 				        .logoutSuccessUrl("/index").and()
 				.formLogin()
-					.loginPage("/login")
+					.loginPage("/login").defaultSuccessUrl("/index", true)
 					.failureUrl("/login-error");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -33,17 +41,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			}
 		});
 	}
+	
+	
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+	
 	@Override
-	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("user").password(passwordEncoder().encode("password")).roles("USER")
-				.and().withUser("johndoe").password(passwordEncoder().encode("password")).roles("USER").and()
-				.withUser("admin").password(passwordEncoder().encode("password")).roles("ADMIN");
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider());
+    }
 
 }
