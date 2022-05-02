@@ -39,10 +39,9 @@ public class EmailService {
 		try {
 			emailSender.send(message);
 		} catch (MailException e) {
-			log.error("Unable to send email:");
+			log.error("Unable to send email:",e);
 			log.error("Source Email:" + sourceEmailAddress);
 			log.error("Target Email:" + targetEmailAddress);
-			log.error(e.getStackTrace().toString());
 		}
 
 	}
