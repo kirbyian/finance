@@ -16,10 +16,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.kirby.finance.controller.ExchangeController;
+
+import lombok.extern.slf4j.Slf4j;
+
 @ComponentScan(basePackages = { "com.kirby.finance.*" })
 @EntityScan(basePackages = { "com.kirby.finance.model" })
 @EnableJpaRepositories("com.kirby.finance.repository")
 
+@Slf4j
 @EnableScheduling
 @EnableAspectJAutoProxy
 @PropertySource("classpath:config.properties")
@@ -41,6 +46,10 @@ public class FinanceApplication {
 
 		mailSender.setUsername(env.getProperty("finance.email.source.email"));
 		mailSender.setPassword(env.getProperty("finance.email.source.password"));
+		
+		log.info("####### EMAIL PARAMS ########");
+		log.info("USERNAME:"+env.getProperty("finance.email.source.email"));
+		log.info("PASSWORD:"+env.getProperty("finance.email.source.password"));
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
