@@ -1,8 +1,6 @@
 package com.kirby.finance.controller;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kirby.finance.dto.RateDTO;
 import com.kirby.finance.exchange.constants.ExchangeConstants;
+import com.kirby.finance.service.EmailService;
 import com.kirby.finance.service.cryptoexchange.CryptoExchangeServiceAll;
 import com.kirby.finance.service.cryptoexchange.CryptoParams;
-import com.litesoftwares.coingecko.constant.Currency;
 import com.litesoftwares.coingecko.domain.Coins.MarketData;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class ExchangeController implements ExchangeConstants {
 
@@ -36,7 +37,8 @@ public class ExchangeController implements ExchangeConstants {
 		try {
 			model.addAttribute("rates", cryptoExchangeService.fetchTrendingCryptoApiData());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Unable to retrieve rates from Crypto Exchange");
+			log.error(e.toString());
 		}
 		return "crypto-all";
 	}

@@ -1,10 +1,14 @@
 package com.kirby.finance.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class EmailService {
 
@@ -31,7 +35,16 @@ public class EmailService {
 		message.setTo(targetEmailAddress);
 		message.setSubject(subject);
 		message.setText(emailText);
-		emailSender.send(message);
+
+		try {
+			emailSender.send(message);
+		} catch (MailException e) {
+			log.error("Unable to send email:");
+			log.error("Source Email:" + sourceEmailAddress);
+			log.error("Target Email:" + targetEmailAddress);
+			log.error(e.getStackTrace().toString());
+		}
+
 	}
 
 }
