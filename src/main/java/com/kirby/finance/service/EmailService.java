@@ -1,6 +1,7 @@
 package com.kirby.finance.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,6 +15,9 @@ public class EmailService {
 
 	@Autowired
 	private JavaMailSender emailSender;
+	
+	@Autowired
+	private Environment env;
 
 	public EmailService(JavaMailSender emailSender) {
 		this.emailSender = emailSender;
@@ -26,9 +30,10 @@ public class EmailService {
 	 * @param targetEmailAddress
 	 * @param emailText
 	 * @param sourceEmailAddress
+	 * @throws Exception 
 	 */
 	public void sendEmailMessage(String subject, String targetEmailAddress, String emailText,
-			String sourceEmailAddress) {
+			String sourceEmailAddress) throws Exception {
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(sourceEmailAddress);

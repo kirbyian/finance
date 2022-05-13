@@ -7,5 +7,8 @@ public interface EmailServiceConstants {
 	public static final String beginH1Tag="<h1>";
 	public static final String endH1Tag="</h1>";
 	public static final String verificationBody="Please click the following link to verify your email ";
+	public static final int SMTP_PORT = 587;
+	public static final String SMTP_HOST = "smtp-mail.outlook.com";
+
 
 }

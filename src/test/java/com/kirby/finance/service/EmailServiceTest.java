@@ -11,8 +11,8 @@ class EmailServiceTest {
 	private EmailService emailService;
 
 	@Test
-	void testSendEmailMessage() {
-		emailService.sendEmailMessage("Test", "iankirby1991@hotmail.com", "Sample Email", "iankirby1991@gmail.com");
+	void testSendEmailMessage() throws Exception {
+		emailService.sendEmailMessage("Test", "iankirby1991@gmail.com", "Sample Email", "iankirby1991@hotmail.com");
 	}
 
 }

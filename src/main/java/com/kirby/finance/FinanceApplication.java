@@ -16,7 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.kirby.finance.controller.ExchangeController;
+import com.kirby.finance.service.EmailServiceConstants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 public class FinanceApplication {
 
-	@Autowired
+		@Autowired
 	private Environment env;
 
 	public static void main(String[] args) {
@@ -39,17 +39,17 @@ public class FinanceApplication {
 	}
 
 	@Bean
-	public JavaMailSender getJavaMailSender() {
+	public JavaMailSender javaMailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587);
+		mailSender.setHost(EmailServiceConstants.SMTP_HOST);
+		mailSender.setPort(EmailServiceConstants.SMTP_PORT);
 
 		mailSender.setUsername(env.getProperty("finance.email.source.email"));
 		mailSender.setPassword(env.getProperty("finance.email.source.password"));
-		
+
 		log.info("####### EMAIL PARAMS ########");
-		log.info("USERNAME:"+env.getProperty("finance.email.source.email"));
-		log.info("PASSWORD:"+env.getProperty("finance.email.source.password"));
+		log.info("USERNAME:" + env.getProperty("finance.email.source.email"));
+		log.info("PASSWORD:" + env.getProperty("finance.email.source.password"));
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
