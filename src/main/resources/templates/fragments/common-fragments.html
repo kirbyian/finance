@@ -53,7 +53,7 @@
 
 				<div sec:authorize="hasRole('ADMIN')" class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Admin Pages</h6>
-					<a class="collapse-item" th:href="@{/admin/users}">Users</a>
+					<a class="collapse-item" th:text="#{heading.users}" th:href="@{/admin/users}">Users</a>
 					<!--   <a
 						class="collapse-item" th:href="@{/savings/createpage/}">Create
 						new User</a> -->
@@ -62,9 +62,10 @@
 
 				<div>
 					<div sec:authorize="isAnonymous()" class="bg-white py-2 collapse-inner rounded">
+					<h6 class="collapse-header" th:text="#{heading.registration}"></h6>
 						<a class="collapse-item" th:text="#{heading.register}" th:href="@{/user/registration/}"></a>
 						<div class="collapse-divider"></div>
-						<a class="collapse-item" th:href="@{/login/}">Login</a>
+						<a class="collapse-item" th:text="#{heading.login}" th:href="@{/login/}"></a>
 						<div class="collapse-divider"></div>
 					</div>
 
@@ -123,13 +124,23 @@
 			</div>
 		</form>
 		-->
-
+		
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false" th:text="${#strings.toUpperCase(#locale)}">
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				<a class="dropdown-item" th:href="@{/(lang=en)}"><img height="15"  width="15" th:src="@{images/flags/1x1/gb.svg}" /> English</i></a>
+				<a class="dropdown-item" th:href="@{/(lang=fr)}"><img height="15"  width="15" th:src="@{images/flags/1x1/fr.svg}" /> French</a>
+				<a class="dropdown-item" th:href="@{/(lang=pt)}"><img height="15"  width="15" th:src="@{images/flags/1x1/br.svg}" /> Portuguese</a>
+			</div>
+		</li>
+          <!--
 		<span th:text="#{lang.change}"></span> <select id="locales">
-			<option value=""></option>
 			<option value="en" th:text="#{lang.eng}"></option>
 			<option value="fr" th:text="#{lang.fr}"></option>
 			<option value="pt" th:text="#{lang.pt}"></option>
-		</select>
+		</select> -->
 
 
 		<!-- 
@@ -200,7 +211,7 @@
 			$("#locales").change(function () {
 				var selectedOption = $('#locales').val();
 				if (selectedOption != '') {
-					window.location.replace('http://localhost:8089?lang=' + selectedOption);
+					window.location =window.location.replace('http://localhost:8089?lang=' + selectedOption);
 				}
 			});
 		});
